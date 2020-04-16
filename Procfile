@@ -1,1 +1,1 @@
-web: npm start
+web: sucrase ./src -d ./dist --transforms typescript,imports

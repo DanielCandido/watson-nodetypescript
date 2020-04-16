@@ -12,12 +12,12 @@ class WatsonController {
     try {
       const discoveryClient = new DiscoveryV1({
         authenticator: new IamAuthenticator({
-          apikey: 'wDR6_m4DQ43NJnIZ0KUFys-AJzVGdhDvFH1gAmkMpaNl'
+          apikey: process.env.PUBLIC_KEY_WATSON
         })
       })
 
       discoveryClient.listEnvironments().then(data => {
-        return res.json(data)
+        return res.json('API NODE COM TYPESCRIPT + CONEXAO COM WATSON')
       }).catch(e => {
         console.log(e)
       })
@@ -36,7 +36,7 @@ class WatsonController {
       // })
 
       const translator = new Translator({
-        authenticator: new IamAuthenticator({ apikey: '5eqWdB6OYu2FDJ_1tOTIweLZmQUrQIDROXVvRWsci8Cn' }),
+        authenticator: new IamAuthenticator({ apikey: process.env.PRIVATE_KEY_TRANSLATION }),
         URL: 'https://api.us-south.language-translator.watson.cloud.ibm.com/instances/5891d1e5-02a2-4d8d-919a-5c29da3f8318/v3/translate?version=2018-05-01',
         version: '2018-05-01',
         disableSslVerification: true
@@ -62,7 +62,7 @@ class WatsonController {
   public async speechToText (req: Request, res: Response): Promise<Response> {
     try {
       const speechText = new SpeechToText({
-        authenticator: new IamAuthenticator({ apikey: 'ARM2aeyQFr_io0QGxPpYLZg2vyt99Y4GcM76xoK_PquN' }),
+        authenticator: new IamAuthenticator({ apikey: process.env.PRIVATE_KEY_SPEECHTOTEXT }),
         url: 'https://stream.watsonplatform.net/speech-to-text/api/'
       })
 
@@ -88,7 +88,7 @@ class WatsonController {
       const msg = req.body
 
       const textSpeech = new TextToSpeech({
-        authenticator: new IamAuthenticator({ apikey: 'wDR6_m4DQ43NJnIZ0KUFys-AJzVGdhDvFH1gAmkMpaNl' }),
+        authenticator: new IamAuthenticator({ apikey: process.env.PRIVATE_KEY_TEXTTOSPEECH }),
         url: 'https://stream.watsonplatform.net/text-to-speech/api/'
       })
 

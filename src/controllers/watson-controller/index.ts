@@ -17,7 +17,7 @@ class WatsonController {
       })
 
       discoveryClient.listEnvironments().then(data => {
-        return res.json('API NODE COM TYPESCRIPT + CONEXAO COM WATSON')
+        return res.send('API NODE COM TYPESCRIPT + CONEXAO COM WATSON')
       }).catch(e => {
         console.log(e)
       })

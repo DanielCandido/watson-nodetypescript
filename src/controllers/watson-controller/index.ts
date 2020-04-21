@@ -10,6 +10,7 @@ class WatsonController {
   // LIST ENVIROMENT
   public async index (req: Request, res: Response): Promise<Response> {
     try {
+      console.log('Inicio API')
       const discoveryClient = new DiscoveryV1({
         authenticator: new IamAuthenticator({
           apikey: process.env.PUBLIC_KEY_WATSON
@@ -18,12 +19,13 @@ class WatsonController {
 
       discoveryClient.listEnvironments().then(data => {
         console.log(data)
-        return res.send('API NODE COM TYPESCRIPT + CONEXAO COM WATSON')
+        return res.json('API NODE COM TYPESCRIPT + CONEXAO COM WATSON')
       }).catch(e => {
         console.log(e)
+        res.send('erro')
       })
     } catch (e) {
-      return res.send(e)
+      return res.send('erro')
     }
   }
 
@@ -52,7 +54,8 @@ class WatsonController {
       ).then(response => {
         res.send(JSON.stringify(response.result, null, 2))
       }).catch(e => {
-        res.send(e)
+        console.log(e)
+        res.send('erro ao traduzir')
       })
     } catch (e) {
       console.log(e)
@@ -62,6 +65,7 @@ class WatsonController {
 
   public async speechToText (req: Request, res: Response): Promise<Response> {
     try {
+      console.log(req.file)
       const speechText = new SpeechToText({
         authenticator: new IamAuthenticator({ apikey: process.env.PRIVATE_KEY_SPEECHTOTEXT }),
         url: 'https://stream.watsonplatform.net/speech-to-text/api/'
@@ -69,8 +73,8 @@ class WatsonController {
 
       const params = {
         // From file
-        audio: fs.createReadStream('./public/audio-file.flac'),
-        contentType: 'audio/flac; rate=44100'
+        audio: fs.createReadStream('./public/' + req.file.originalname),
+        contentType: 'audio/mp3'
       }
 
       speechText.recognize(params, null).then(response => {
@@ -78,6 +82,7 @@ class WatsonController {
         res.send(response.result.results[0].alternatives[0].transcript)
       }).catch(e => {
         console.log(e)
+        res.send('Erro ao enviar dados para Watson')
       })
     } catch (e) {
       return res.send(e)
